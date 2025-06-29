@@ -1,0 +1,69 @@
+import { Github, Linkedin, Instagram, X } from "lucide-react";
+
+export default function Footer() {
+  const currentYear = new Date().getFullYear();
+
+  return (
+    <footer className="border-t border-white/10 bg-gradient-to-r from-gray-900 via-blue-900 to-purple-900 text-white py-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-8">
+          {/* Brand and tagline */}
+          <div className="mb-6 md:mb-0 text-center md:text-left">
+            <a href="https://barbelltobinary.netlify.app/" target="_blank" className="text-2xl font-serif font-bold gradient-text">
+              BarbellToBinary
+            </a>
+            <p className="text-gray-400 text-sm mt-2">
+              StudySync AI helps students learn smarter with AI-powered doubt solving, resource recommendations, and productivity tools—all in one dashboard.
+            </p>
+          </div>
+
+          {/* Social icons */}
+          <div className="flex gap-4 mb-6 md:mb-0">
+            <a
+              href="https://github.com/singhHariom1"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-10 h-10 rounded-full glass flex items-center justify-center hover:bg-accent/20 hover:scale-110 transform transition-transform duration-200"
+              title="GitHub"
+            >
+              <Github className="w-5 h-5" />
+            </a>
+            <a
+              href="https://www.linkedin.com/in/hariom-singh6199/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-10 h-10 rounded-full glass flex items-center justify-center hover:bg-accent/20 hover:scale-110 transform transition-transform duration-200"
+              title="LinkedIn"
+            >
+              <Linkedin className="w-5 h-5" />
+            </a>
+            <a
+              href="https://x.com/BarbellToBinary"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-10 h-10 rounded-full glass flex items-center justify-center hover:bg-accent/20 hover:scale-110 transform transition-transform duration-200"
+              title="X"
+            >
+              <X className="w-5 h-5" />
+            </a>
+            <a
+              href="https://www.instagram.com/stoic.liftss/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-10 h-10 rounded-full glass flex items-center justify-center hover:bg-accent/20 hover:scale-110 transform transition-transform duration-200"
+              title="Instagram"
+            >
+              <Instagram className="w-5 h-5" />
+            </a>
+          </div>
+        </div>
+
+        <div className="mt-8 pt-6 border-t border-white/10 flex flex-col items-center">
+          <p className="text-sm text-gray-400">
+            Designed and developed by Hariom Singh • {currentYear}
+          </p>
+        </div>
+      </div>
+    </footer>
+  );
+} 
