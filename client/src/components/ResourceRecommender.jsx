@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import axios from 'axios';
 
+const API = import.meta.env.VITE_API_URL || '';
+
 const ResourceRecommender = ({ topics = [] }) => {
   const [resources, setResources] = useState({});
   const [loading, setLoading] = useState(false);
@@ -16,7 +18,7 @@ const ResourceRecommender = ({ topics = [] }) => {
     setError('');
     setResources({});
     try {
-      const response = await axios.post('/api/resources/suggest', { topics });
+      const response = await axios.post(`${API}/api/resources/suggest`, { topics });
       setResources(response.data.resources);
       setGeneratedTopics(topics);
     } catch (err) {

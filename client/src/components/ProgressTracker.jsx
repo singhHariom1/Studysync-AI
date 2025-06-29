@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
+const API = import.meta.env.VITE_API_URL || '';
+
 const ProgressTracker = () => {
   const [progress, setProgress] = useState({
     todayCompleted: 0,
@@ -16,7 +18,7 @@ const ProgressTracker = () => {
     setError('');
     
     try {
-      const response = await axios.get('/api/tasks/progress');
+      const response = await axios.get(`${API}/api/tasks/progress`);
       setProgress(response.data);
     } catch (err) {
       console.error('Failed to fetch progress:', err);

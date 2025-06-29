@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
+const API = import.meta.env.VITE_API_URL || '';
+
 const TaskPlanner = () => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -32,7 +34,7 @@ const TaskPlanner = () => {
     setLoading(true);
     setError('');
     try {
-      let url = `/api/tasks?sortBy=${sortBy}&sortOrder=${sortOrder}`;
+      let url = `${API}/api/tasks?sortBy=${sortBy}&sortOrder=${sortOrder}`;
       if (filter !== 'all') {
         url += `&status=${filter}`;
       }
@@ -88,11 +90,11 @@ const TaskPlanner = () => {
     try {
       if (editingTask) {
         // Update existing task
-        await axios.patch(`/api/tasks/${editingTask._id}`, formData);
+        await axios.patch(`${API}/api/tasks/${editingTask._id}`, formData);
         console.log('✅ Task updated successfully');
       } else {
         // Create new task
-        await axios.post('/api/tasks', formData);
+        await axios.post(`${API}/api/tasks`, formData);
         console.log('✅ Task created successfully');
       }
       
@@ -109,7 +111,7 @@ const TaskPlanner = () => {
   // Toggle task completion
   const toggleTaskStatus = async (taskId) => {
     try {
-      await axios.patch(`/api/tasks/${taskId}/toggle`);
+      await axios.patch(`${API}/api/tasks/${taskId}/toggle`);
       fetchTasks();
     } catch (err) {
       console.error('Failed to toggle task:', err);
@@ -124,7 +126,7 @@ const TaskPlanner = () => {
     }
 
     try {
-      await axios.delete(`/api/tasks/${taskId}`);
+      await axios.delete(`${API}/api/tasks/${taskId}`);
       console.log('✅ Task deleted successfully');
       fetchTasks();
     } catch (err) {
