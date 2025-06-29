@@ -6,6 +6,12 @@ StudySync AI is a modern, full-stack MERN application designed to supercharge yo
 
 ---
 
+## 🚀 Live Demo
+- **Frontend:** [https://studysync-ai-nu.vercel.app/](https://studysync-ai-nu.vercel.app/)
+- **Backend API:** [https://studysync-ai-jte1.onrender.com](https://studysync-ai-jte1.onrender.com)
+
+---
+
 ## 🚀 Features
 
 - **AI Doubt Solver** (Gemini AI): Instantly get answers and explanations for any academic question.
@@ -40,8 +46,8 @@ Hackathon/
 
 ### 1. Clone the repo
 ```bash
-git clone https://github.com/yourusername/studysync-ai.git
-cd studysync-ai
+git clone https://github.com/singhHariom1/Studysync-AI.git
+cd Studysync-AI
 ```
 
 ### 2. Install dependencies
@@ -78,6 +84,9 @@ npm run dev
 ---
 
 ## 🌐 Deployment
+- **Frontend (client) Live:** [https://studysync-ai-nu.vercel.app/](https://studysync-ai-nu.vercel.app/)
+- **Backend (server) Live:** [https://studysync-ai-jte1.onrender.com](https://studysync-ai-jte1.onrender.com)
+
 - Deploy the frontend (client) to Vercel, Netlify, or your favorite static host.
 - Deploy the backend (server) to Render, Railway, or any Node.js host.
 - Set environment variables in your deployment dashboard (never commit secrets).
