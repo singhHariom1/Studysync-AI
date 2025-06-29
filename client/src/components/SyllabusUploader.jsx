@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import axios from 'axios';
 
+const API = import.meta.env.VITE_API_URL || '';
+
 const SyllabusUploader = ({ onTopicsExtracted }) => {
   const [file, setFile] = useState(null);
   const [topics, setTopics] = useState([]);
@@ -39,7 +41,7 @@ const SyllabusUploader = ({ onTopicsExtracted }) => {
     formData.append('syllabus', file);
 
     try {
-      const response = await axios.post('/api/syllabus/upload', formData, {
+      const response = await axios.post(`${API}/api/syllabus/upload`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
