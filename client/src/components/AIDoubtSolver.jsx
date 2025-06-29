@@ -2,6 +2,8 @@ import { useState } from 'react';
 import axios from 'axios';
 import { formatMarkdown } from '../utils/markdownFormatter';
 
+const API = import.meta.env.VITE_API_URL || '';
+
 const AIDoubtSolver = () => {
   const [question, setQuestion] = useState('');
   const [response, setResponse] = useState('');
@@ -20,7 +22,7 @@ const AIDoubtSolver = () => {
     setResponse('');
 
     try {
-      const result = await axios.post('/api/gemini/ask', { question });
+      const result = await axios.post(`${API}/api/gemini/ask`, { question });
       setResponse(result.data.response);
     } catch (err) {
       console.error('AI error:', err);
