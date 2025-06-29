@@ -73,7 +73,7 @@ router.post('/ask', async (req, res) => {
 
     // Use the models.generateContent method directly
     const result = await genAI.models.generateContent({
-      model: "gemini-2.5-pro",
+      model: "gemini-2.5-flash",
       contents: question,
     });
     

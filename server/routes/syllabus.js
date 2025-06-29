@@ -163,7 +163,7 @@ router.post('/upload', upload.single('syllabus'), async (req, res) => {
 
     // Use Gemini to extract topics
     const result = await genAI.models.generateContent({
-      model: "gemini-2.5-pro",
+      model: "gemini-2.5-flash",
       contents: prompt,
     });
 
