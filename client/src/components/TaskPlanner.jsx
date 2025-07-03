@@ -153,8 +153,8 @@ const TaskPlanner = () => {
 
   return (
     <div className="max-w-5xl mx-auto p-6 animate-fade-in-up">
-      <div className="bg-white/80 dark:bg-gray-900/90 backdrop-blur-lg rounded-2xl shadow-2xl p-10 border border-blue-100 dark:border-gray-800 card-main">
-        <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-8 gap-4">
+      <div className="bg-white/80 dark:bg-gray-900/90 backdrop-blur-lg rounded-lg sm:rounded-2xl shadow-2xl p-4 sm:p-6 md:p-10 border border-blue-100 dark:border-gray-800 card-main">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 sm:mb-8 gap-3 sm:gap-4">
           <h2 className="heading-main text-gray-800 dark:text-indigo-200">
             <span className="text-3xl mr-2">📋</span> Task Planner
           </h2>
@@ -175,12 +175,12 @@ const TaskPlanner = () => {
         )}
         {/* Task Form */}
         {showForm && (
-          <div className="mb-8 p-6 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900 border border-blue-200 dark:border-gray-700 rounded-xl animate-fade-in-up">
+          <div className="mb-6 sm:mb-8 p-4 sm:p-6 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900 border border-blue-200 dark:border-gray-700 rounded-lg sm:rounded-xl animate-fade-in-up">
             <h3 className="heading-section mb-4">
               {editingTask ? '✏️ Edit Task' : '➕ New Task'}
             </h3>
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-200">
                     Title *
@@ -271,7 +271,7 @@ const TaskPlanner = () => {
           </div>
         )}
         {/* Filter & Sort Controls */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-4 mb-8">
           <div className="flex gap-2 items-center">
             <label className="font-medium text-gray-700 dark:text-gray-200">Filter:</label>
             <select
@@ -305,7 +305,7 @@ const TaskPlanner = () => {
           </div>
         </div>
         {/* Task List */}
-        <div className="grid gap-6">
+        <div className="grid gap-4 sm:gap-6">
           {loading ? (
             <div className="text-center py-8">
               <div className="spinner w-8 h-8 mx-auto"></div>

@@ -16,12 +16,12 @@ const Navigation = ({ activeTab, setActiveTab }) => {
             <button
               key={item.key}
               onClick={() => setActiveTab(item.key)}
-              className={`relative py-5 px-6 font-semibold text-base transition-all duration-300 whitespace-nowrap rounded-t-lg flex flex-col items-center h-full ${
+              className={`relative py-3 sm:py-5 px-4 sm:px-6 font-semibold text-base transition-all duration-300 whitespace-nowrap rounded-t-lg flex flex-col items-center h-full ${
                 activeTab === item.key
                   ? 'text-blue-700 dark:text-blue-300 bg-blue-50 dark:bg-gray-800'
                   : 'text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800'
               }`}
-              style={{ minWidth: 140 }}
+              style={{ minWidth: 100, minHeight: 48 }}
             >
               <span>{item.label}</span>
               {/* Animated underline */}

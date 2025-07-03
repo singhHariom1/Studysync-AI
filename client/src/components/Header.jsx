@@ -16,8 +16,8 @@ export default function Header({ user, onAuthClick }) {
   const { logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
   return (
-    <header className="bg-white dark:bg-gray-900 shadow-sm py-4 px-6 flex items-center justify-between transition-colors duration-300">
-      <div className="flex flex-col">
+    <header className="bg-white dark:bg-gray-900 shadow-sm py-4 px-4 sm:px-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0 transition-colors duration-300">
+      <div className="flex flex-col items-center sm:items-start w-full sm:w-auto">
         <div className="text-2xl font-bold text-indigo-700 dark:text-indigo-200 tracking-tight flex items-center">
           <span className="mr-2">🎓</span> StudySync-AI
         </div>
@@ -25,7 +25,7 @@ export default function Header({ user, onAuthClick }) {
           Your all-in-one AI-powered study companion: solve doubts, get resources, and boost productivity.
         </span>
       </div>
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-4 justify-center sm:justify-end w-full sm:w-auto mt-3 sm:mt-0">
         {/* Dark/Light mode toggle */}
         <button
           onClick={toggleTheme}
