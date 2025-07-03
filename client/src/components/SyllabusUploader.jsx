@@ -3,7 +3,14 @@ import axios from 'axios';
 
 const API = import.meta.env.VITE_API_URL || '';
 
-const SyllabusUploader = ({ onTopicsExtracted }) => {
+function cleanTopic(topic) {
+  // Remove leading numbers, dots, whitespace, markdown, and trailing colons
+  let cleaned = topic.replace(/^\d+\.\s*/, '');
+  cleaned = cleaned.replace(/[*_]+/g, '').replace(/:$/, '').trim();
+  return cleaned;
+}
+
+const SyllabusUploader = ({ onTopicsExtracted, onSendToResourceRecommender }) => {
   const [file, setFile] = useState(null);
   const [topics, setTopics] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -41,7 +48,7 @@ const SyllabusUploader = ({ onTopicsExtracted }) => {
     formData.append('syllabus', file);
 
     try {
-      const response = await axios.post(`${API}/api/syllabus/upload`, formData, {
+      const response = await axios.post(`${API}/syllabus/upload`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -70,8 +77,8 @@ const SyllabusUploader = ({ onTopicsExtracted }) => {
 
   return (
     <div className="max-w-3xl mx-auto p-6 animate-fade-in-up">
-      <div className="bg-white/80 backdrop-blur-lg rounded-2xl shadow-2xl p-10 border border-blue-100 card-main">
-        <h2 className="heading-main text-center mb-2">
+      <div className="bg-white/80 dark:bg-gray-900/90 backdrop-blur-lg rounded-2xl shadow-2xl p-10 border border-blue-100 dark:border-gray-800 card-main">
+        <h2 className="heading-main text-center mb-2 text-gray-800 dark:text-indigo-200">
           <span className="text-4xl mr-2">📚</span> Syllabus Topic Extractor
         </h2>
         <p className="text-gray-500 text-center mb-8 text-lg">
@@ -79,7 +86,7 @@ const SyllabusUploader = ({ onTopicsExtracted }) => {
         </p>
         {/* File Upload Section */}
         <div className="mb-8">
-          <div className="border-2 border-dashed border-blue-200 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-10 text-center hover:border-blue-400 transition-colors duration-300">
+          <div className="border-2 border-dashed border-blue-200 dark:border-blue-800 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900 rounded-xl p-10 text-center hover:border-blue-400 dark:hover:border-blue-500 transition-colors duration-300">
             <input
               id="pdf-upload"
               type="file"
@@ -100,7 +107,7 @@ const SyllabusUploader = ({ onTopicsExtracted }) => {
         </div>
         {/* Error Display */}
         {error && (
-          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg animate-fade-in-up">
+          <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/40 border border-red-200 dark:border-red-800 rounded-lg animate-fade-in-up">
             <p className="text-red-600 flex items-center">
               <span className="text-xl mr-2">⚠️</span> {error}
             </p>
@@ -137,7 +144,7 @@ const SyllabusUploader = ({ onTopicsExtracted }) => {
         {/* Topics Display */}
         {topics.length > 0 && (
           <div className="mt-8 animate-fade-in-up">
-            <h3 className="heading-section text-center mb-6">
+            <h3 className="heading-section text-center mb-6 text-gray-800 dark:text-indigo-200">
               🎯 Extracted Study Topics
             </h3>
             <div className="grid gap-4">
@@ -151,8 +158,8 @@ const SyllabusUploader = ({ onTopicsExtracted }) => {
                       {index + 1}
                     </div>
                     <div className="flex-1">
-                      <p className="text-gray-800 font-medium leading-relaxed">
-                        {topic.replace(/^\d+\.\s*/, '')}
+                      <p className="text-gray-800 dark:text-gray-100 font-medium leading-relaxed">
+                        {cleanTopic(topic)}
                       </p>
                     </div>
                   </div>
@@ -160,10 +167,21 @@ const SyllabusUploader = ({ onTopicsExtracted }) => {
               ))}
             </div>
             <div className="mt-6 text-center">
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-gray-500 dark:text-gray-400">
                 ✨ {topics.length} topics extracted from "{fileName}"
               </p>
             </div>
+            {/* Hybrid: Send to Resource Recommender button */}
+            {onSendToResourceRecommender && (
+              <div className="mt-8 flex justify-center">
+                <button
+                  className="px-6 py-3 rounded-lg bg-gradient-to-r from-green-500 to-emerald-500 dark:from-green-700 dark:to-emerald-800 text-white font-bold shadow hover:from-green-600 hover:to-emerald-600 dark:hover:from-green-800 dark:hover:to-emerald-900 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-400 text-lg"
+                  onClick={() => onSendToResourceRecommender(topics.map(cleanTopic))}
+                >
+                  <span className="mr-2">➡️</span>Send to Resource Recommender
+                </button>
+              </div>
+            )}
           </div>
         )}
       </div>

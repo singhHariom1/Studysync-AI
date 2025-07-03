@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
-
-const API = import.meta.env.VITE_API_URL || '';
+import api from '../utils/api';
 
 const TaskPlanner = () => {
   const [tasks, setTasks] = useState([]);
@@ -22,23 +20,16 @@ const TaskPlanner = () => {
     description: ''
   });
 
-  // Available subjects with colors
-  const subjects = [
-    'Operating Systems', 'DBMS', 'Computer Networks', 'Data Structures',
-    'Algorithms', 'Machine Learning', 'Web Development', 'Python',
-    'JavaScript', 'React', 'Other'
-  ];
-
   // Fetch tasks
   const fetchTasks = async () => {
     setLoading(true);
     setError('');
     try {
-      let url = `${API}/api/tasks?sortBy=${sortBy}&sortOrder=${sortOrder}`;
+      let url = `/tasks?sortBy=${sortBy}&sortOrder=${sortOrder}`;
       if (filter !== 'all') {
         url += `&status=${filter}`;
       }
-      const response = await axios.get(url);
+      const response = await api.get(url);
       setTasks(response.data.tasks);
     } catch (err) {
       console.error('Failed to fetch tasks:', err);
@@ -78,26 +69,20 @@ const TaskPlanner = () => {
   // Create or update task
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
     if (!formData.title || !formData.subject || !formData.dueDate) {
       setError('Please fill in all required fields');
       return;
     }
-
     setLoading(true);
     setError('');
-
     try {
       if (editingTask) {
-        // Update existing task
-        await axios.patch(`${API}/api/tasks/${editingTask._id}`, formData);
+        await api.patch(`/tasks/${editingTask._id}`, formData);
         console.log('✅ Task updated successfully');
       } else {
-        // Create new task
-        await axios.post(`${API}/api/tasks`, formData);
+        await api.post('/tasks', formData);
         console.log('✅ Task created successfully');
       }
-      
       resetForm();
       fetchTasks();
     } catch (err) {
@@ -111,7 +96,7 @@ const TaskPlanner = () => {
   // Toggle task completion
   const toggleTaskStatus = async (taskId) => {
     try {
-      await axios.patch(`${API}/api/tasks/${taskId}/toggle`);
+      await api.patch(`/tasks/${taskId}/toggle`);
       fetchTasks();
     } catch (err) {
       console.error('Failed to toggle task:', err);
@@ -124,9 +109,8 @@ const TaskPlanner = () => {
     if (!window.confirm('Are you sure you want to delete this task?')) {
       return;
     }
-
     try {
-      await axios.delete(`${API}/api/tasks/${taskId}`);
+      await api.delete(`/tasks/${taskId}`);
       console.log('✅ Task deleted successfully');
       fetchTasks();
     } catch (err) {
@@ -169,9 +153,9 @@ const TaskPlanner = () => {
 
   return (
     <div className="max-w-5xl mx-auto p-6 animate-fade-in-up">
-      <div className="bg-white/80 backdrop-blur-lg rounded-2xl shadow-2xl p-10 border border-blue-100 card-main">
+      <div className="bg-white/80 dark:bg-gray-900/90 backdrop-blur-lg rounded-2xl shadow-2xl p-10 border border-blue-100 dark:border-gray-800 card-main">
         <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-8 gap-4">
-          <h2 className="heading-main">
+          <h2 className="heading-main text-gray-800 dark:text-indigo-200">
             <span className="text-3xl mr-2">📋</span> Task Planner
           </h2>
           <button
@@ -183,7 +167,7 @@ const TaskPlanner = () => {
         </div>
         {/* Error Display */}
         {error && (
-          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg animate-fade-in-up">
+          <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/40 border border-red-200 dark:border-red-800 rounded-lg animate-fade-in-up">
             <p className="text-red-600 flex items-center">
               <span className="text-xl mr-2">⚠️</span> {error}
             </p>
@@ -191,14 +175,14 @@ const TaskPlanner = () => {
         )}
         {/* Task Form */}
         {showForm && (
-          <div className="mb-8 p-6 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl animate-fade-in-up">
+          <div className="mb-8 p-6 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900 border border-blue-200 dark:border-gray-700 rounded-xl animate-fade-in-up">
             <h3 className="heading-section mb-4">
               {editingTask ? '✏️ Edit Task' : '➕ New Task'}
             </h3>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-200">
                     Title *
                   </label>
                   <input
@@ -212,24 +196,21 @@ const TaskPlanner = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-200">
                     Subject *
                   </label>
-                  <select
+                  <input
+                    type="text"
                     name="subject"
                     value={formData.subject}
                     onChange={handleInputChange}
                     className="input-field"
+                    placeholder="Enter subject"
                     required
-                  >
-                    <option value="">Select subject</option>
-                    {subjects.map(subject => (
-                      <option key={subject} value={subject}>{subject}</option>
-                    ))}
-                  </select>
+                  />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-200">
                     Due Date *
                   </label>
                   <input
@@ -242,7 +223,7 @@ const TaskPlanner = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-200">
                     Priority
                   </label>
                   <select
@@ -258,7 +239,7 @@ const TaskPlanner = () => {
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-200">
                   Description
                 </label>
                 <textarea
@@ -292,7 +273,7 @@ const TaskPlanner = () => {
         {/* Filter & Sort Controls */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
           <div className="flex gap-2 items-center">
-            <label className="font-medium text-gray-700">Filter:</label>
+            <label className="font-medium text-gray-700 dark:text-gray-200">Filter:</label>
             <select
               value={filter}
               onChange={e => setFilter(e.target.value)}
@@ -304,7 +285,7 @@ const TaskPlanner = () => {
             </select>
           </div>
           <div className="flex gap-2 items-center">
-            <label className="font-medium text-gray-700">Sort by:</label>
+            <label className="font-medium text-gray-700 dark:text-gray-200">Sort by:</label>
             <select
               value={sortBy}
               onChange={e => setSortBy(e.target.value)}
@@ -328,15 +309,15 @@ const TaskPlanner = () => {
           {loading ? (
             <div className="text-center py-8">
               <div className="spinner w-8 h-8 mx-auto"></div>
-              <p className="mt-2 text-gray-600">Loading tasks...</p>
+              <p className="mt-2 text-gray-600 dark:text-gray-300">Loading tasks...</p>
             </div>
           ) : tasks.length === 0 ? (
             <div className="text-center py-12 animate-fade-in-up">
               <div className="text-6xl mb-4">🗂️</div>
-              <h3 className="text-xl font-medium text-gray-700 mb-2">
+              <h3 className="text-xl font-medium text-gray-700 mb-2 dark:text-gray-200">
                 No Tasks Found
               </h3>
-              <p className="text-gray-500">
+              <p className="text-gray-500 dark:text-gray-400">
                 Add a new task to get started with your planning!
               </p>
             </div>
@@ -344,24 +325,24 @@ const TaskPlanner = () => {
             tasks.map(task => (
               <div
                 key={task._id}
-                className={`bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-6 flex flex-col md:flex-row md:items-center gap-4 shadow-md hover:shadow-lg transition-shadow animate-fade-in-up ${task.status === 'completed' ? 'opacity-60' : ''}`}
+                className={`bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900 border border-blue-200 dark:border-gray-700 rounded-xl p-6 flex flex-col md:flex-row md:items-center gap-4 shadow-md hover:shadow-lg transition-shadow animate-fade-in-up ${task.status === 'completed' ? 'opacity-60' : ''}`}
               >
                 <div className="flex-1">
                   <div className="flex flex-col md:flex-row md:items-center gap-2 mb-2">
-                    <span className="font-bold text-lg text-gray-800 flex items-center gap-2">
+                    <span className="font-extrabold text-lg text-gray-800 dark:text-white flex items-center gap-2">
                       {getPriorityIcon(task.priority)} {task.title}
                     </span>
-                    <span className="ml-2 px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700">
+                    <span className="ml-2 px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 dark:bg-blue-900 dark:text-blue-100 text-blue-700">
                       {task.subject}
                     </span>
-                    <span className="ml-2 px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-700">
+                    <span className="ml-2 px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 dark:bg-gray-800 dark:text-gray-200 text-gray-700">
                       Due: {formatDate(task.dueDate)}
                     </span>
                   </div>
                   {task.description && (
-                    <p className="text-gray-600 mb-2">{task.description}</p>
+                    <p className="text-base font-medium mb-2 text-gray-700 dark:text-gray-200 dark:font-semibold">{task.description}</p>
                   )}
-                  <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${task.status === 'completed' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>
+                  <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${task.status === 'completed' ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-200' : 'bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-200'}`}>
                     {task.status === 'completed' ? 'Completed' : 'Pending'}
                   </span>
                 </div>

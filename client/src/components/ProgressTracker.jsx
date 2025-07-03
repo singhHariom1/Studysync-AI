@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
-
-const API = import.meta.env.VITE_API_URL || '';
+import api from '../utils/api';
 
 const ProgressTracker = () => {
   const [progress, setProgress] = useState({
@@ -18,7 +16,7 @@ const ProgressTracker = () => {
     setError('');
     
     try {
-      const response = await axios.get(`${API}/api/tasks/progress`);
+      const response = await api.get('/tasks/progress');
       setProgress(response.data);
     } catch (err) {
       console.error('Failed to fetch progress:', err);
@@ -98,13 +96,13 @@ const ProgressTracker = () => {
 
   return (
     <div className="max-w-4xl mx-auto p-6 animate-fade-in-up">
-      <div className="bg-white/80 backdrop-blur-lg rounded-2xl shadow-2xl p-10 border border-purple-100 card-main">
-        <h2 className="heading-main text-center mb-6">
+      <div className="bg-white/80 dark:bg-gray-900/90 backdrop-blur-lg rounded-2xl shadow-2xl p-10 border border-purple-100 dark:border-gray-800 card-main">
+        <h2 className="heading-main text-center mb-6 text-gray-800 dark:text-indigo-200">
           <span className="text-3xl mr-2">📈</span> Daily Progress Tracker
         </h2>
         {/* Error Display */}
         {error && (
-          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg animate-fade-in-up">
+          <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/40 border border-red-200 dark:border-red-800 rounded-lg animate-fade-in-up">
             <p className="text-red-600 flex items-center">
               <span className="text-xl mr-2">⚠️</span> {error}
             </p>
@@ -120,7 +118,7 @@ const ProgressTracker = () => {
             {/* Progress Overview */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
               {/* Today's Completed Tasks */}
-              <div className="bg-green-50 border border-green-200 rounded-lg p-6 text-center">
+              <div className="bg-green-50 dark:bg-gray-800 border border-green-200 dark:border-green-800 rounded-lg p-6 text-center">
                 <div className="text-4xl mb-2">✅</div>
                 <div className="text-2xl font-bold text-green-600">
                   {progress.todayCompleted}
@@ -130,7 +128,7 @@ const ProgressTracker = () => {
                 </div>
               </div>
               {/* Total Tasks */}
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 text-center">
+              <div className="bg-blue-50 dark:bg-gray-800 border border-blue-200 dark:border-blue-800 rounded-lg p-6 text-center">
                 <div className="text-4xl mb-2">📋</div>
                 <div className="text-2xl font-bold text-blue-600">
                   {progress.totalTasks}
@@ -140,7 +138,7 @@ const ProgressTracker = () => {
                 </div>
               </div>
               {/* Completion Rate */}
-              <div className="bg-purple-50 border border-purple-200 rounded-lg p-6 text-center">
+              <div className="bg-purple-50 dark:bg-gray-800 border border-purple-200 dark:border-purple-800 rounded-lg p-6 text-center">
                 <div className="text-4xl mb-2">📈</div>
                 <div className={`text-2xl font-bold ${getProgressColor(progress.percentage)}`}>
                   {progress.percentage}%
@@ -175,8 +173,8 @@ const ProgressTracker = () => {
             {/* Progress Insights */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Today's Achievement */}
-              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-6">
-                <h3 className="heading-section text-blue-800 mb-3">
+              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900 border border-blue-200 dark:border-gray-700 rounded-lg p-6">
+                <h3 className="heading-section text-blue-800 dark:text-indigo-200 mb-3">
                   🎯 Today's Achievement
                 </h3>
                 {progress.todayCompleted > 0 ? (
@@ -197,8 +195,8 @@ const ProgressTracker = () => {
                 )}
               </div>
               {/* Tips for Success */}
-              <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg p-6">
-                <h3 className="heading-section text-green-800 mb-3">
+              <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-gray-800 dark:to-gray-900 border border-green-200 dark:border-green-800 rounded-lg p-6">
+                <h3 className="heading-section text-green-800 dark:text-indigo-200 mb-3">
                   💡 Tips for Success
                 </h3>
                 <ul className="text-green-700 text-sm space-y-2">

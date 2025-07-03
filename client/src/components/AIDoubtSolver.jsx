@@ -22,7 +22,7 @@ const AIDoubtSolver = () => {
     setResponse('');
 
     try {
-      const result = await axios.post(`${API}/api/gemini/ask`, { question });
+      const result = await axios.post(`${API}/gemini/ask`, { question });
       setResponse(result.data.response);
     } catch (err) {
       console.error('AI error:', err);
@@ -40,10 +40,10 @@ const AIDoubtSolver = () => {
 
   return (
     <div className="max-w-3xl mx-auto p-6 animate-fade-in-up">
-      <div className="bg-white/80 backdrop-blur-lg rounded-2xl shadow-2xl p-10 border border-blue-100 card-main">
+      <div className="bg-white/80 dark:bg-gray-900/90 backdrop-blur-lg rounded-2xl shadow-2xl p-10 border border-blue-100 dark:border-gray-800 card-main">
         <div className="text-center mb-8">
           <div className="text-6xl mb-4">🤔</div>
-          <h2 className="heading-main mb-2">
+          <h2 className="heading-main mb-2 text-gray-800 dark:text-indigo-200">
             AI Doubt Solver
           </h2>
           <p className="text-gray-500 text-lg">
@@ -52,7 +52,7 @@ const AIDoubtSolver = () => {
         </div>
         {/* Error Display */}
         {error && (
-          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg animate-fade-in-up">
+          <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/40 border border-red-200 dark:border-red-800 rounded-lg animate-fade-in-up">
             <p className="flex items-center text-red-600">
               <span className="text-xl mr-2">⚠️</span> {error}
             </p>
@@ -102,12 +102,12 @@ const AIDoubtSolver = () => {
         {/* AI Response */}
         {response && (
           <div className="animate-fade-in-up">
-            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-6">
+            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900 border border-blue-200 dark:border-gray-700 rounded-xl p-6">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold">
                   AI
                 </div>
-                <h3 className="heading-section">
+                <h3 className="heading-section text-gray-800 dark:text-indigo-200">
                   AI Response
                 </h3>
               </div>
@@ -121,8 +121,8 @@ const AIDoubtSolver = () => {
           </div>
         )}
         {/* Tips Section */}
-        <div className="mt-8 p-6 bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl">
-          <h3 className="heading-section text-green-800 mb-3 flex items-center">
+        <div className="mt-8 p-6 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-gray-800 dark:to-gray-900 border border-green-200 dark:border-green-800 rounded-xl">
+          <h3 className="heading-section text-green-800 dark:text-indigo-200 mb-3 flex items-center">
             💡 Pro Tips
           </h3>
           <ul className="text-green-700 space-y-2 text-sm">

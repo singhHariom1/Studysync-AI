@@ -4,18 +4,21 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-white/10 bg-gradient-to-r from-gray-900 via-blue-900 to-purple-900 text-white py-10">
+    <footer className="border-t border-white/10 bg-gradient-to-r from-gray-900 via-blue-900 to-purple-900 text-white dark:bg-gradient-to-r dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 dark:text-gray-200 py-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row justify-between items-center gap-8">
           {/* Brand and tagline */}
           <div className="mb-6 md:mb-0 text-center md:text-left">
-            <a href="https://barbelltobinary.netlify.app/" target="_blank" className="text-2xl font-serif font-bold gradient-text">
+            <a href="https://barbelltobinary.netlify.app/" target="_blank" className="text-2xl font-serif font-bold gradient-text transition duration-200 hover:text-blue-300 focus:text-blue-300" style={{textShadow: '0 2px 8px rgba(80,80,255,0.08)'}}>
               BarbellToBinary
             </a>
-            <p className="text-gray-400 text-sm mt-2">
-              StudySync AI helps students learn smarter with AI-powered doubt solving, resource recommendations, and productivity tools—all in one dashboard.
+            <p className="text-gray-400 text-sm mt-2 dark:text-gray-300">
+              Smarter study, powered by AI. Doubt solving, resources, and productivity—one dashboard.
             </p>
           </div>
+
+          {/* Divider for mobile */}
+          <div className="block md:hidden w-full my-4 border-t border-white/10 dark:border-gray-800"></div>
 
           {/* Social icons */}
           <div className="flex gap-4 mb-6 md:mb-0">
@@ -58,9 +61,12 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-8 pt-6 border-t border-white/10 flex flex-col items-center">
-          <p className="text-sm text-gray-400">
-            Designed and developed by Hariom Singh • {currentYear}
+        <div className="mt-8 pt-6 border-t border-white/10 dark:border-gray-800 flex flex-col items-center">
+          <p className="text-sm text-gray-400 mb-1 dark:text-gray-300">
+            Designed and developed by Hariom Singh
+          </p>
+          <p className="text-xs text-gray-500 dark:text-gray-400">
+            © {currentYear} BarbellToBinary. All rights reserved.
           </p>
         </div>
       </div>

@@ -114,7 +114,7 @@ const PomodoroTimer = () => {
     <div className="max-w-md mx-auto p-6 animate-fade-in-up">
       <div className="bg-white/80 backdrop-blur-lg rounded-2xl shadow-2xl p-10 border border-purple-100 card-main">
         <h2 className="heading-main text-center mb-6">
-          <span className="text-4xl mr-2">🍅</span> Pomodoro Timer
+          <span className="text-4xl align-middle mr-2">🍅</span> Pomodoro Timer
         </h2>
         {/* Timer Display */}
         <div className="text-center mb-8">

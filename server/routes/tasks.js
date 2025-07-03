@@ -8,8 +8,11 @@ import {
   updateTask,
   deleteTask
 } from '../controllers/tasksController.js';
+import { authMiddleware } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
+
+router.use(authMiddleware);
 
 router.get('/progress', getProgressStats);
 router.patch('/:id/toggle', toggleTask);

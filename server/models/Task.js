@@ -41,6 +41,11 @@ const taskSchema = new mongoose.Schema({
   completedAt: {
     type: Date,
     default: null
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
   }
 }, {
   timestamps: true
@@ -70,15 +75,16 @@ taskSchema.methods.markAsPending = function() {
 };
 
 // Static method to get progress statistics
-taskSchema.statics.getProgressStats = async function() {
+taskSchema.statics.getProgressStats = async function(userId) {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const tomorrow = new Date(today);
   tomorrow.setDate(tomorrow.getDate() + 1);
 
   const [totalTasks, todayCompleted] = await Promise.all([
-    this.countDocuments(),
+    this.countDocuments({ user: userId }),
     this.countDocuments({
+      user: userId,
       status: 'completed',
       completedAt: { $gte: today, $lt: tomorrow }
     })

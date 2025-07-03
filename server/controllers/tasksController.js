@@ -3,7 +3,7 @@ import { getSubjectColor, getPriorityColor } from '../utils/taskColors.js';
 
 export const getProgressStats = async (req, res) => {
   try {
-    const stats = await Task.getProgressStats();
+    const stats = await Task.getProgressStats(req.user._id);
     console.log(`📊 Progress stats: ${stats.todayCompleted}/${stats.totalTasks} (${stats.percentage}%)`);
     res.json({ success: true, ...stats });
   } catch (error) {
@@ -45,7 +45,14 @@ export const createTask = async (req, res) => {
     if (!title || !subject || !dueDate) {
       return res.status(400).json({ error: 'Title, subject, and due date are required' });
     }
-    const task = new Task({ title, subject, dueDate: new Date(dueDate), priority, description });
+    const task = new Task({
+      title,
+      subject,
+      dueDate: new Date(dueDate),
+      priority,
+      description,
+      user: req.user._id
+    });
     await task.save();
     console.log(`✅ Task created: ${task.title}`);
     res.status(201).json({
@@ -69,7 +76,7 @@ export const createTask = async (req, res) => {
 export const getAllTasks = async (req, res) => {
   try {
     const { status, subject, sortBy = 'dueDate', sortOrder = 'asc', limit = 50 } = req.query;
-    const filter = {};
+    const filter = { user: req.user._id };
     if (status) filter.status = status;
     if (subject) filter.subject = subject;
     const sort = {};
@@ -91,7 +98,7 @@ export const getAllTasks = async (req, res) => {
 
 export const getTaskById = async (req, res) => {
   try {
-    const task = await Task.findById(req.params.id).lean();
+    const task = await Task.findOne({ _id: req.params.id, user: req.user._id }).lean();
     if (!task) {
       return res.status(404).json({ error: 'Task not found' });
     }
@@ -113,7 +120,7 @@ export const getTaskById = async (req, res) => {
 export const updateTask = async (req, res) => {
   try {
     const { title, subject, dueDate, status, priority, description } = req.body;
-    const task = await Task.findById(req.params.id);
+    const task = await Task.findOne({ _id: req.params.id, user: req.user._id });
     if (!task) {
       return res.status(404).json({ error: 'Task not found' });
     }
@@ -152,7 +159,7 @@ export const updateTask = async (req, res) => {
 
 export const deleteTask = async (req, res) => {
   try {
-    const task = await Task.findByIdAndDelete(req.params.id);
+    const task = await Task.findOneAndDelete({ _id: req.params.id, user: req.user._id });
     if (!task) {
       return res.status(404).json({ error: 'Task not found' });
     }
