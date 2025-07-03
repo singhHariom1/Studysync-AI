@@ -46,7 +46,7 @@ const AIDoubtSolver = () => {
           <h2 className="heading-main mb-2 text-gray-800 dark:text-indigo-200">
             AI Doubt Solver
           </h2>
-          <p className="text-gray-500 text-lg">
+          <p className="text-gray-500 dark:text-gray-200 text-lg">
             Ask any academic question and get instant AI-powered explanations
           </p>
         </div>
@@ -61,7 +61,7 @@ const AIDoubtSolver = () => {
         {/* Question Form */}
         <form onSubmit={handleSubmit} className="mb-8">
           <div className="mb-6">
-            <label htmlFor="question" className="block text-sm font-semibold text-gray-700 mb-3">
+            <label htmlFor="question" className="block text-sm font-semibold text-gray-700 dark:text-gray-100 mb-3">
               What's your question?
             </label>
             <textarea
@@ -113,7 +113,7 @@ const AIDoubtSolver = () => {
               </div>
               <div className="prose prose-blue max-w-none">
                 <div 
-                  className="text-gray-700 leading-relaxed"
+                  className="text-gray-700 dark:text-gray-100 leading-relaxed"
                   dangerouslySetInnerHTML={{ __html: formatMarkdown(response) }}
                 />
               </div>
@@ -122,10 +122,10 @@ const AIDoubtSolver = () => {
         )}
         {/* Tips Section */}
         <div className="mt-8 p-6 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-gray-800 dark:to-gray-900 border border-green-200 dark:border-green-800 rounded-xl">
-          <h3 className="heading-section text-green-800 dark:text-indigo-200 mb-3 flex items-center">
+          <h3 className="heading-section text-green-800 dark:text-green-200 mb-3 flex items-center">
             💡 Pro Tips
           </h3>
-          <ul className="text-green-700 space-y-2 text-sm">
+          <ul className="text-green-700 dark:text-green-200 space-y-2 text-sm">
             <li>• Be specific with your questions for better answers</li>
             <li>• Ask for step-by-step explanations of complex concepts</li>
             <li>• Request examples to better understand topics</li>

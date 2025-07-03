@@ -86,15 +86,15 @@ const ResourceRecommender = ({ topics = [], onTopicsConsumed }) => {
   return (
     <div className="max-w-4xl mx-auto p-6 animate-fade-in-up">
       <div className="bg-white/80 dark:bg-gray-900/90 backdrop-blur-lg rounded-2xl shadow-2xl p-10 border border-green-100 dark:border-gray-800 card-main">
-        <h2 className="heading-main text-center mb-2 text-gray-800 dark:text-indigo-200">
+        <h2 className="heading-main text-center mb-2 text-gray-800 dark:text-gray-100">
           <span className="text-4xl mr-2">🎓</span> AI Resource Recommender
         </h2>
-        <p className="text-gray-500 text-center mb-8 text-lg">
+        <p className="text-gray-500 dark:text-gray-200 text-center mb-8 text-lg">
           Get personalized learning resources for your study topics
         </p>
         {/* Topics Input */}
         <div className="mb-6">
-          <label className="block text-gray-700 font-medium mb-2 text-center">Enter topics (one per line or comma separated):</label>
+          <label className="block text-gray-700 dark:text-gray-100 font-medium mb-2 text-center">Enter topics (one per line or comma separated):</label>
           <textarea
             className="w-full min-h-[90px] max-h-40 p-3 rounded-lg border border-green-200 dark:border-green-800 focus:border-green-400 focus:ring-2 focus:ring-green-100 outline-none bg-green-50 dark:bg-gray-800 text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 transition resize-y"
             placeholder={`e.g.\n• Operating Systems\n• DBMS\n• Machine Learning`}
@@ -127,14 +127,14 @@ const ResourceRecommender = ({ topics = [], onTopicsConsumed }) => {
               <span className="flex items-center gap-2">🎯 Generate Learning Resources</span>
             )}
           </button>
-          {Object.keys(resources).length > 0 && (
+          {(input.trim() || Object.keys(resources).length > 0) && (
             <button
               onClick={handleReset}
               disabled={loading}
               className="btn-secondary"
               aria-label="Reset"
             >
-              Reset
+              🔄 Reset
             </button>
           )}
         </div>
@@ -148,7 +148,7 @@ const ResourceRecommender = ({ topics = [], onTopicsConsumed }) => {
               {generatedTopics.map((topic, index) => (
                 <div
                   key={index}
-                  className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg p-6 hover:shadow-lg transition-shadow"
+                  className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-gray-800 dark:to-gray-900 border border-green-200 dark:border-green-700 rounded-lg p-6 hover:shadow-lg transition-shadow"
                 >
                   <div className="flex items-start gap-4 mb-4">
                     <div className="flex-shrink-0 w-10 h-10 bg-green-600 text-white rounded-full flex items-center justify-center font-bold text-lg">
@@ -166,7 +166,7 @@ const ResourceRecommender = ({ topics = [], onTopicsConsumed }) => {
                       {resources[topic] && resources[topic].map((resource, resourceIndex) => (
                         <div
                           key={resourceIndex}
-                          className="bg-white dark:bg-gray-900 border border-green-100 dark:border-green-800 rounded-lg p-4 hover:border-green-300 dark:hover:border-green-500 transition-colors"
+                          className="bg-white dark:bg-gray-800 border border-green-100 dark:border-green-800 rounded-lg p-4 hover:border-green-300 dark:hover:border-green-500 transition-colors"
                         >
                           <div className="flex items-start gap-3">
                             <div className="flex-shrink-0 text-xl">

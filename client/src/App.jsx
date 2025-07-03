@@ -52,7 +52,7 @@ function AppContent() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 flex flex-col">
-      <Header user={user} onAuthClick={() => setShowAuth(true)} />
+      <Header user={user} onAuthClick={() => setShowAuth(true)} onHeaderHomeClick={() => setActiveTab('doubt')} />
       <Navigation activeTab={activeTab} setActiveTab={handleTabChange} />
       <main className="flex-1 py-6 xs:py-8 sm:py-10 px-2 xs:px-3 sm:px-6 md:px-8 bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
         <div className="max-w-full sm:max-w-5xl mx-auto animate-fade-in-up">

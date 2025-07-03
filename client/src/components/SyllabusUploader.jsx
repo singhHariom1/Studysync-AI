@@ -78,10 +78,10 @@ const SyllabusUploader = ({ onTopicsExtracted, onSendToResourceRecommender }) =>
   return (
     <div className="max-w-3xl mx-auto p-6 animate-fade-in-up">
       <div className="bg-white/80 dark:bg-gray-900/90 backdrop-blur-lg rounded-2xl shadow-2xl p-10 border border-blue-100 dark:border-gray-800 card-main">
-        <h2 className="heading-main text-center mb-2 text-gray-800 dark:text-indigo-200">
+        <h2 className="heading-main text-center mb-2 text-gray-800 dark:text-gray-100">
           <span className="text-4xl mr-2">📚</span> Syllabus Topic Extractor
         </h2>
-        <p className="text-gray-500 text-center mb-8 text-lg">
+        <p className="text-gray-500 dark:text-gray-200 text-center mb-8 text-lg">
           Upload your syllabus PDF and get the top 10 study topics extracted by AI
         </p>
         {/* File Upload Section */}
@@ -96,10 +96,10 @@ const SyllabusUploader = ({ onTopicsExtracted, onSendToResourceRecommender }) =>
             />
             <label htmlFor="pdf-upload" className="cursor-pointer select-none">
               <div className="text-6xl mb-4">📄</div>
-              <p className="text-lg font-medium text-gray-700 mb-2">
+              <p className="text-lg font-medium text-gray-700 dark:text-gray-100 mb-2">
                 {fileName ? fileName : 'Click to upload PDF syllabus'}
               </p>
-              <p className="text-sm text-gray-400">
+              <p className="text-sm text-gray-400 dark:text-gray-400">
                 {fileName ? 'Click to change file' : 'Maximum file size: 10MB'}
               </p>
             </label>
@@ -151,7 +151,7 @@ const SyllabusUploader = ({ onTopicsExtracted, onSendToResourceRecommender }) =>
               {topics.map((topic, index) => (
                 <div
                   key={index}
-                  className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-4 hover:shadow-md transition-shadow"
+                  className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900 border border-blue-200 dark:border-blue-700 rounded-lg p-4 hover:shadow-md transition-shadow"
                 >
                   <div className="flex items-start gap-3">
                     <div className="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-sm">

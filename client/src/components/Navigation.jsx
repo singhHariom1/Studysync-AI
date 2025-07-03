@@ -12,12 +12,12 @@ const navItems = [
 const Navigation = ({ activeTab, setActiveTab }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   return (
-    <nav className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800 shadow-sm sticky top-0 z-20">
-      <div className="max-w-7xl mx-auto px-0 sm:px-6">
+    <nav className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800 shadow-sm sticky top-0 z-20 h-16">
+      <div className="max-w-7xl mx-auto px-0 sm:px-6 h-16 flex items-center">
         {/* Hamburger for mobile */}
-        <div className="flex items-center justify-between sm:hidden h-14">
+        <div className="flex items-center justify-between sm:hidden h-16 w-full">
           <button
-            className="p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 absolute right-4"
+            className="p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 absolute right-4 top-1/2 -translate-y-1/2"
             aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
             onClick={() => setMobileOpen((v) => !v)}
           >
@@ -31,7 +31,7 @@ const Navigation = ({ activeTab, setActiveTab }) => {
         {/* Mobile menu overlay */}
         {mobileOpen && (
           <div className="fixed inset-0 z-30 bg-black/40 flex flex-col items-end sm:hidden">
-            <div className="bg-white dark:bg-gray-900 w-64 h-full shadow-lg p-6 flex flex-col gap-2 animate-fade-in-up">
+            <div className="bg-white dark:bg-gray-900 w-64 h-full shadow-lg p-6 flex flex-col gap-2 animate-fade-in-up mt-16">
               <button
                 className="self-end mb-4 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                 aria-label="Close menu"
@@ -57,7 +57,7 @@ const Navigation = ({ activeTab, setActiveTab }) => {
           </div>
         )}
         {/* Desktop nav */}
-        <div className="hidden sm:flex justify-center space-x-2 overflow-x-auto scrollbar-hide h-20 items-end">
+        <div className="hidden sm:flex justify-center space-x-2 overflow-x-auto scrollbar-hide h-16 items-end w-full">
           {navItems.map((item) => (
             <button
               key={item.key}
