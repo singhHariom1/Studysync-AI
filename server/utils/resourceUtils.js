@@ -1,5 +1,34 @@
+import axios from 'axios';
+
 export const MAX_TOPICS_PER_REQUEST = 10;
 export const TIMEOUT_PER_TOPIC = 15000; // 15 seconds per topic
+
+const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY;
+
+// Helper to extract YouTube video ID from a URL
+function extractYouTubeVideoId(url) {
+  const regex = /(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?|shorts)\/|.*[?&]v=)|youtu\.be\/)([\w-]{11})/;
+  const match = url.match(regex);
+  return match ? match[1] : null;
+}
+
+// Check if a YouTube video is active using the YouTube Data API
+async function isYouTubeVideoActive(url) {
+  if (!YOUTUBE_API_KEY) return true; // If no key, skip check
+  const videoId = extractYouTubeVideoId(url);
+  if (!videoId) return false;
+  try {
+    const apiUrl = `https://www.googleapis.com/youtube/v3/videos?part=status&id=${videoId}&key=${YOUTUBE_API_KEY}`;
+    const response = await axios.get(apiUrl);
+    const items = response.data.items;
+    if (items && items.length > 0 && items[0].status && items[0].status.privacyStatus === 'public') {
+      return true;
+    }
+    return false;
+  } catch (err) {
+    return false;
+  }
+}
 
 /**
  * Generate learning resources for a single topic using Gemini AI
@@ -25,6 +54,14 @@ Format each resource as: "🎥 [Title - YouTube](link)" or "📘 [Title - Source
     while ((match = linkRegex.exec(response)) !== null) {
       const title = match[1];
       const url = match[2];
+      // If YouTube link, check if active
+      if (/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\//.test(url)) {
+        const active = await isYouTubeVideoActive(url);
+        if (!active) {
+          links.push(`[Fallback Resource - Search ${topic} on YouTube](https://youtube.com/results?search_query=${encodeURIComponent(topic)})`);
+          continue;
+        }
+      }
       links.push(`[${title}](${url})`);
     }
     // If no links found, try to extract any URLs

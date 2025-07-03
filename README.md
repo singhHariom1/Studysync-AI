@@ -14,21 +14,25 @@ StudySync AI is a modern, full-stack MERN application designed to supercharge yo
 
 ## 🚀 Features
 
+- **Unified Minimal Header & Navbar:** Clean, minimal top bar with dark/light toggle, user profile initials, and responsive navigation for all devices.
+- **Fully Responsive Design:** Seamless experience across desktop, tablet, and mobile, including a fullscreen glassy mobile menu.
 - **AI Doubt Solver** (Gemini AI): Instantly get answers and explanations for any academic question.
-- **Syllabus PDF Analyzer**: Upload your syllabus and extract the top 10 study topics using AI.
-- **AI Resource Recommender**: Get personalized learning resources for your syllabus topics.
-- **Task Planner**: Full CRUD for tasks, with filtering, sorting, color tags, and a modern UI.
-- **Pomodoro Timer**: Focused work/break cycles with notifications and progress tracking.
-- **Progress Tracker**: Visualize your daily and overall task completion with motivational feedback.
-- **Beautiful, Consistent UI**: Glassmorphism, gradients, and a premium SaaS look throughout.
+- **Syllabus PDF Analyzer:** Upload your syllabus and extract the top 10 study topics using AI.
+- **AI Resource Recommender:** Get personalized learning resources for your syllabus topics, with a reset button and live YouTube link checking (only active/public YouTube videos are suggested; dead/unavailable links are replaced with a fallback search link).
+- **Task Planner:** Full CRUD for tasks, with filtering, sorting, color tags, and a modern UI.
+- **Pomodoro Timer:** Focused work/break cycles with notifications and progress tracking.
+- **Progress Tracker:** Visualize your daily and overall task completion with motivational feedback.
+- **Improved Dark Mode:** Enhanced readability and contrast throughout the app, including all AI and resource content.
+- **User Profile Initials:** After login, your initials appear in the profile button for a personalized touch.
+- **Beautiful, Consistent UI:** Glassmorphism, gradients, and a premium SaaS look throughout.
 
 ---
 
 ## 🛠️ Tech Stack
 
-- **Frontend**: React 19, Vite, Tailwind CSS, Lucide Icons
-- **Backend**: Node.js, Express 5, MongoDB (Mongoose), Gemini AI API, PDF parsing
-- **Other**: Axios, Multer, dotenv, CORS, ESLint
+- **Frontend:** React 19, Vite, Tailwind CSS, Lucide Icons
+- **Backend:** Node.js, Express 5, MongoDB (Mongoose), Gemini AI API, PDF parsing
+- **Other:** Axios, Multer, dotenv, CORS, ESLint
 
 ---
 
@@ -97,6 +101,31 @@ npm run dev
 A root `.gitignore` is provided to keep your repo clean:
 - Ignores all `node_modules`, build outputs, logs, and local env files for both client and server.
 - **Never commit `.env` or sensitive files.**
+
+---
+
+## 🛠️ YouTube Data API Key Setup (for Live Link Checking)
+
+To ensure only working YouTube videos are suggested, the backend checks each YouTube link using the YouTube Data API. You must provide an API key for this feature.
+
+### 1. Get a YouTube Data API Key
+- Go to the [Google Cloud Console](https://console.cloud.google.com/)
+- Create/select a project
+- Enable the **YouTube Data API v3**
+- Go to **APIs & Services > Credentials** and create an **API key**
+
+### 2. Add the Key to Your Backend
+- In your `server/.env` file, add:
+  ```
+  YOUTUBE_API_KEY=your_youtube_api_key
+  ```
+- **For production (e.g., Render):**
+  - Go to your Render dashboard
+  - Select your backend service
+  - Add `YOUTUBE_API_KEY` in the Environment Variables section
+  - Redeploy/restart your service
+
+> If no API key is provided, YouTube link checking will be skipped and all links will be shown as before.
 
 ---
 

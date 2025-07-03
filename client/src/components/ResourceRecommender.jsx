@@ -3,6 +3,24 @@ import axios from 'axios';
 
 const API = import.meta.env.VITE_API_URL || '';
 
+// Helper to check if a URL is a YouTube link
+function isYouTubeLink(url) {
+  return /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\//.test(url);
+}
+
+// Live check if a YouTube link is available
+async function checkYouTubeLinkAvailable(url) {
+  try {
+    // Use fetch with 'no-cors' to avoid CORS errors, but we can't read the body.
+    // Instead, try to fetch and check for a 200 status (works for public videos)
+    const response = await fetch(url, { method: 'HEAD', mode: 'no-cors' });
+    // If fetch does not throw, assume available (cannot read status in no-cors, so fallback to try/catch)
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 function cleanTopic(topic) {
   // Remove leading numbers, dots, whitespace, markdown, and trailing colons
   let cleaned = topic.replace(/^\d+\.\s*/, '');
@@ -17,6 +35,7 @@ const ResourceRecommender = ({ topics = [], onTopicsConsumed }) => {
   const [generatedTopics, setGeneratedTopics] = useState([]);
   const [input, setInput] = useState('');
   const [hasPrefilled, setHasPrefilled] = useState(false);
+  const [checkedResources, setCheckedResources] = useState({});
 
   // Only pre-fill if input is empty and topics are new
   useEffect(() => {
@@ -27,6 +46,37 @@ const ResourceRecommender = ({ topics = [], onTopicsConsumed }) => {
     }
     // eslint-disable-next-line
   }, [topics]);
+
+  // Check YouTube links after resources are fetched
+  useEffect(() => {
+    const checkLinks = async () => {
+      if (!resources || Object.keys(resources).length === 0) return;
+      const newChecked = {};
+      for (const topic of Object.keys(resources)) {
+        newChecked[topic] = await Promise.all(
+          resources[topic].map(async (resource) => {
+            // Extract link from markdown
+            const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/;
+            const match = resource.match(linkRegex);
+            if (match) {
+              const [, title, url] = match;
+              if (isYouTubeLink(url)) {
+                const available = await checkYouTubeLinkAvailable(url);
+                if (!available) {
+                  // Replace with fallback search link
+                  return `[Fallback Resource - Search ${cleanTopic(topic)} on YouTube](https://youtube.com/results?search_query=${encodeURIComponent(cleanTopic(topic))})`;
+                }
+              }
+            }
+            return resource;
+          })
+        );
+      }
+      setCheckedResources(newChecked);
+    };
+    checkLinks();
+    // eslint-disable-next-line
+  }, [resources]);
 
   const handleGenerateResources = async () => {
     const topicList = input
@@ -163,7 +213,7 @@ const ResourceRecommender = ({ topics = [], onTopicsConsumed }) => {
                   {/* Resources for this topic */}
                   <div className="ml-14">
                     <div className="grid gap-3">
-                      {resources[topic] && resources[topic].map((resource, resourceIndex) => (
+                      {(checkedResources[topic] || resources[topic] || []).map((resource, resourceIndex) => (
                         <div
                           key={resourceIndex}
                           className="bg-white dark:bg-gray-800 border border-green-100 dark:border-green-800 rounded-lg p-4 hover:border-green-300 dark:hover:border-green-500 transition-colors"
