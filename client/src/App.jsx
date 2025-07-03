@@ -11,6 +11,7 @@ import Footer from './components/Footer';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import AuthModal from './components/AuthModal';
 import { ThemeProvider } from './context/ThemeContext';
+import Loader from './components/Loader';
 
 function AppContent() {
   const [activeTab, setActiveTab] = useState('doubt');
@@ -48,7 +49,7 @@ function AppContent() {
     }
   };
 
-  if (loading) return <div className="flex items-center justify-center h-screen">Loading...</div>;
+  if (loading) return <div className="flex items-center justify-center h-screen"><Loader /></div>;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 flex flex-col">
