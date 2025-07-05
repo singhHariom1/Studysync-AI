@@ -58,6 +58,21 @@ export const login = async (req, res) => {
   }
 };
 
+export const logout = async (req, res) => {
+  try {
+    // Clear the JWT token cookie
+    res.clearCookie('token', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
+    });
+    
+    res.json({ message: 'Logout successful' });
+  } catch (err) {
+    res.status(500).json({ error: 'Logout failed: ' + err.message });
+  }
+};
+
 export const getMe = async (req, res) => {
   if (!req.user) {
     return res.status(401).json({ error: 'Not authenticated' });

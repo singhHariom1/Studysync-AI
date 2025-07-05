@@ -5,4 +5,16 @@ const api = axios.create({
   withCredentials: true,
 });
 
+// Pomodoro session tracking functions
+export const pomodoroAPI = {
+  // Get today's statistics
+  getTodayStats: () => api.get('/pomodoro/stats/today'),
+  
+  // Add a completed session
+  addSession: (type, duration) => api.post('/pomodoro/session', { type, duration }),
+  
+  // Get weekly statistics
+  getWeeklyStats: () => api.get('/pomodoro/stats/weekly')
+};
+
 export default api; 

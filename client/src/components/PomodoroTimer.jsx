@@ -1,4 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
+import { pomodoroAPI } from '../utils/api';
+import { useAuth } from '../context/AuthContext';
 
 const PomodoroTimer = () => {
   const [timeLeft, setTimeLeft] = useState(25 * 60); // 25 minutes in seconds
@@ -6,9 +8,46 @@ const PomodoroTimer = () => {
   const [isBreak, setIsBreak] = useState(false);
   const [cycles, setCycles] = useState(0);
   const [showNotification, setShowNotification] = useState(false);
+  const [todayStats, setTodayStats] = useState(null);
+  const { user } = useAuth();
 
   const WORK_TIME = 25 * 60; // 25 minutes
   const BREAK_TIME = 5 * 60; // 5 minutes
+
+  // Load today's stats on component mount
+  useEffect(() => {
+    if (user) {
+      loadTodayStats();
+    }
+  }, [user]);
+
+  const loadTodayStats = async () => {
+    try {
+      const response = await pomodoroAPI.getTodayStats();
+      if (response.data.success) {
+        setTodayStats(response.data.data);
+        setCycles(response.data.data.completedCycles);
+      }
+    } catch (error) {
+      console.error('Failed to load Pomodoro stats:', error);
+    }
+  };
+
+  // Save session to database
+  const saveSession = async (type, duration) => {
+    if (!user) return; // Don't save if user is not logged in
+    
+    try {
+      const response = await pomodoroAPI.addSession(type, duration);
+      if (response.data.success) {
+        // Update local state immediately for better UX
+        setTodayStats(response.data.data);
+        setCycles(response.data.data.completedCycles);
+      }
+    } catch (error) {
+      console.error('Failed to save Pomodoro session:', error);
+    }
+  };
 
   // Format time as MM:SS
   const formatTime = (seconds) => {
@@ -36,10 +75,10 @@ const PomodoroTimer = () => {
   // Show browser notification
   const showBrowserNotification = useCallback(() => {
     if ('Notification' in window && Notification.permission === 'granted') {
-      const title = isBreak ? 'Break Time!' : 'Work Time!';
+      const title = isBreak ? 'Break Finished!' : 'Work Session Finished!';
       const body = isBreak 
-        ? 'Take a 5-minute break. You deserve it!' 
-        : 'Time to focus! 25-minute work session starting.';
+        ? 'Break time is over! Time to get back to work.' 
+        : 'Great job! Take a 5-minute break to refresh.';
       
       new Notification(title, { body });
     }
@@ -51,13 +90,17 @@ const PomodoroTimer = () => {
     showBrowserNotification();
     setShowNotification(true);
     
+    // Save the completed session
+    const sessionType = isBreak ? 'break' : 'work';
+    const sessionDuration = isBreak ? 5 : 25; // in minutes
+    saveSession(sessionType, sessionDuration);
+    
     setTimeout(() => setShowNotification(false), 3000);
     
     if (isBreak) {
       // Break finished, start work session
       setTimeLeft(WORK_TIME);
       setIsBreak(false);
-      setCycles(prev => prev + 1);
     } else {
       // Work finished, start break
       setTimeLeft(BREAK_TIME);
@@ -116,6 +159,28 @@ const PomodoroTimer = () => {
         <h2 className="heading-main text-center mb-6">
           <span className="text-4xl align-middle mr-2">🍅</span> Pomodoro Timer
         </h2>
+        
+        {/* Today's Statistics */}
+        {todayStats && (
+          <div className="mb-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-200">
+            <h3 className="text-lg font-semibold text-blue-800 mb-2">Today's Progress</h3>
+            <div className="grid grid-cols-3 gap-4 text-center">
+              <div>
+                <div className="text-2xl font-bold text-blue-600">{todayStats.completedCycles}</div>
+                <div className="text-sm text-blue-700">Cycles</div>
+              </div>
+              <div>
+                <div className="text-2xl font-bold text-green-600">{todayStats.totalWorkTime}</div>
+                <div className="text-sm text-green-700">Work (min)</div>
+              </div>
+              <div>
+                <div className="text-2xl font-bold text-orange-600">{todayStats.totalBreakTime}</div>
+                <div className="text-sm text-orange-700">Break (min)</div>
+              </div>
+            </div>
+          </div>
+        )}
+        
         {/* Timer Display */}
         <div className="text-center mb-8">
           <div className="relative w-48 h-48 mx-auto mb-6">
@@ -204,7 +269,7 @@ const PomodoroTimer = () => {
           <div className="fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-bounce">
             <div className="flex items-center gap-2">
               <span className="text-xl">🔔</span>
-              <span>{isBreak ? 'Break finished!' : 'Work session finished!'}</span>
+              <span>{isBreak ? 'Break finished! Time to work!' : 'Work session finished! Take a break!'}</span>
             </div>
           </div>
         )}

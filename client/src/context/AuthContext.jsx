@@ -47,9 +47,16 @@ export function AuthProvider({ children }) {
   };
 
   const logout = async () => {
-    setUser(null);
-    // Optionally, call a backend logout endpoint to clear cookie
-    // For now, just clear user state
+    try {
+      // Call backend logout endpoint to clear the cookie
+      await api.post('/auth/logout');
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
+      // Clear user state regardless of backend response
+      setUser(null);
+      setError(null);
+    }
   };
 
   return (

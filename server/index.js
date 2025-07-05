@@ -8,6 +8,7 @@ import syllabusRoutes from './routes/syllabus.js';
 import resourcesRoutes from './routes/resources.js';
 import tasksRoutes from './routes/tasks.js';
 import authRoutes from './routes/auth.js';
+import pomodoroRoutes from './routes/pomodoro.js';
 
 dotenv.config();
 const app = express();
@@ -36,6 +37,7 @@ app.use('/api/gemini', geminiRoutes);
 app.use('/api/syllabus', syllabusRoutes);
 app.use('/api/resources', resourcesRoutes);
 app.use('/api/tasks', tasksRoutes);
+app.use('/api/pomodoro', pomodoroRoutes);
 
 const PORT = process.env.PORT || 5000;
 
