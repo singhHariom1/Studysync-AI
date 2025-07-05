@@ -47,10 +47,18 @@ pomodoroSessionSchema.index({ userId: 1, date: 1 });
 
 // Method to get today's session for a user
 pomodoroSessionSchema.statics.getTodaySession = function(userId) {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  const now = new Date();
+  
+  // Get start of today in local timezone (not UTC)
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  
+  // Get start of tomorrow in local timezone
   const tomorrow = new Date(today);
   tomorrow.setDate(tomorrow.getDate() + 1);
+  
+  console.log('Looking for session between:', today.toISOString(), 'and', tomorrow.toISOString());
+  console.log('Current time:', now.toISOString());
+  console.log('Today start (local):', today.toISOString());
   
   return this.findOne({
     userId,
